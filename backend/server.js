@@ -2,14 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const fs = require('fs');
-const PORT = 5000
+const PORT = 3001
 const cors = require("cors");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-const userRoute = require('../routes/users.js');
+const userRoute = require('../backend/routes/users.js');
 
 app.get('/', (req, res) => {
     res.send('welcome to the development api-server');

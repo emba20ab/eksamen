@@ -64,7 +64,7 @@ else
                 interest : interest.value
             }
 
-            axios.post("http://localhost:5000/users", userdata)
+            axios.post("http://localhost:3001/users", userdata)
             .then(function(response){
                 console.log(response);
             })
@@ -115,7 +115,7 @@ function loginValidate() {
         username2 : username2.value,
         password2 : password2.value 
     }
-    axios.post("http://localhost:5000/users/login", logindata)
+    axios.post("http://localhost:3001/users/login", logindata)
                 .then(function(response){
                     console.log(response);
                     localStorage.setItem('loggedIn', response.data.id);

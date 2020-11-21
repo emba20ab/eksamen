@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-const userRoute = require('../backend/routes/users.js');
+const userRoute = require('../view/routes/users.js');
 
 app.get('/', (req, res) => {
     res.send('welcome to the development api-server');
@@ -22,4 +22,3 @@ app.use('/users', userRoute)
 app.listen(PORT, () => {
     console.log(`Se min server på port: http://localhost:${PORT}`);
 });
-

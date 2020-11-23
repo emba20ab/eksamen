@@ -1,62 +1,54 @@
-//Lav eventlistener. 
 
-
+//Delete User
 function deleteuser() {
-  
     axios.delete("http://localhost:5000/users/" + localStorage.getItem('loggedIn'))
-    .then(function(response){
-        console.log(response);
-    })
-  
-}
-
-
-
-/*var localStorage
-for (var i = 0; i < localStorage.length; i++){
-    {
-    var newRow = document.getElementById("table").insertRow(table.length);
-    $('body').append(localStorage.getItem(localStorage.key(i)));
-    var cell = newRow.insertCell(j);
-    cell.innerHTML = localStorage [i];
+    .then(function(res){
+         console.log(res);
+         localStorage.removeItem("username")
+         localStorage.removeItem("password")
+         localStorage.removeItem("loggedIn")
+     })
+     .then(() => window.location = "login.html");
+    };
+ 
+ //Get User with id
+    function getuser() {
+     axios.get("http://localhost:5000/users/" + localStorage.getItem('loggedIn'))
+     .then(function(res){
+          console.log(res);
+      })
     }
-}
-
-
-/*const signUp = e => {
-    let formData= {
-
-username: document.getElementById('usernameid').value,
-password: document.getElementById('passwordid').value,
-lastname: document.getElementById('lastnameid').value,
-age: document.getElementById('ageid').value,
-gender: document.getElementById('genderid').value,
-interest: document.getElementById('interestid').value,
-}
-
-localStorage.setItem('formData', JSON.stringify(formData));
-
-disData();
-e.preventDefault();
-}
-
-});
-//"Click" betyder at den skal reagere på et click. 
-submitBtn.addEventListener('click', function(){
-    localStorage.setItem('username', usernameInput.value);
-    localStorage.setItem('firstname', firstnameInput.value);
-    localStorage.setItem('lastname', lastnameInput.value);
-    localStorage.setItem('age', ageInput.value);
-    localStorage.setItem('gender', genderInput.value);
-    localStorage.setItem('interest', interestInput.value);
-    localStorage.setItem('password', password1Input.value);
-})
-
-function nameDisplayCheck() {
-    if(localStorage.getItem('firstname')){
-        let firstname = localStorage.getItem('firstname');
-        h1.textContent = 'Velkommen' + firstname;
-        personalGreeting.textContent = 'Velkommen til vores hjemmeside ' + firstname;
-}}
-
-*/
+ 
+ 
+ const h1 = document.querySelector('h1')
+ const personalGreeting = document.querySelector('.personal-greeting')
+ //Show your name on profile site. 
+ function nameDisplayCheck() {
+     if(localStorage.getItem('username')){
+         let name = localStorage.getItem("username");
+         h1.textContent = "Velkommen til din profil, " + name;
+     }
+ }
+ //Dette betyder at funtionen bliver kørt til sidst. 
+ document.body.onload = nameDisplayCheck
+ 
+ 
+ //Login function
+ function logout() {
+     
+     axios.post("http://localhost:5000/users/logout")
+                 .then(function(response){
+                     console.log(response);
+                     //Edris sagde: localStorage.setItem('', response.data.id); Men det jeg har er godt nok.
+                     localStorage.removeItem("username")
+                     localStorage.removeItem("password")
+                     localStorage.removeItem("loggedIn")
+                 
+                     
+                 })
+                 .then(() => window.location = "login.html");
+ }
+ 
+ 
+     
+ 

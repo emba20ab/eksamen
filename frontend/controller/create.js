@@ -1,16 +1,4 @@
 
-class User{
-    constructor(username, password, firstname, lastname, age, gender, interest){
-        this.username = username
-        this.password = password
-        this.firstname = firstname
-        this.lastname = lastname
-        this.age = age
-        this.gender = gender
-        this.interest = interest
-    }
-}
-
 let username = document.getElementById("usernameid");
 let firstname = document.getElementById("firstnameid");
 let lastname = document.getElementById("lastnameid");
@@ -83,38 +71,18 @@ else
         window.location = "login.html";
 		}
 }
-//Login 
 
-//her skal bruges getElementById til at få fat i bruger input
-/*
-function loginValidate() {
-let logindata = {
-    username : username.value,
-    password1 : password1.value 
-}
-axios.post("http://localhost:5000/users", logindata)
-            .then(function(response){
-                console.log(response);
-            })
-        }
-*/
-  
-
-
-//Localstorage. 
-
-const rememberDiv = document.querySelector('.register-form');
+const rememberDiv = document.querySelector('.husk');
+const forgetDiv = document.querySelector('.glem');
 const table = document.querySelector('table');
 //Bruger # fordi det er et inputfelt. 
-const usernameInput = document.querySelector('#usernameid');
-const firstnameInput = document.querySelector('#firstnameid');
-const lastnameInput = document.querySelector('#lastnameid');
-const ageInput = document.querySelector('#ageid');
-const genderInput = document.querySelector('#genderid');
-const interestInput = document.querySelector('#interestid');
-const password1Input = document.querySelector('#passwordid');
+const nameInput = document.querySelector('#skrivnavn');
+const submitBtn = document.querySelector('#submitnavn');
+const forgetBtn = document.querySelector('#glemnavn');
 
-const submitBtn = document.querySelector('#submituser');
+const h1 = document.querySelector('h1')
+const personalGreeting = document.querySelector('.personal-greeting')
+
 
 table.addEventListener('submit', function(e){
     //Gør at submit ikke gør som den plejer, men at man selv kan definere hvad den skal gøre. 
@@ -122,16 +90,26 @@ table.addEventListener('submit', function(e){
 });
 //"Click" betyder at den skal reagere på et click. 
 submitBtn.addEventListener('click', function(){
-    localStorage.setItem('username', usernameInput.value);
-    localStorage.setItem('firstname', firstnameInput.value);
-    localStorage.setItem('lastname', lastnameInput.value);
-    localStorage.setItem('age', ageInput.value);
-    localStorage.setItem('gender', genderInput.value);
-    localStorage.setItem('interest', interestInput.value);
-    localStorage.setItem('password', password1Input.value);
-    
+    localStorage.setItem('navn', nameInput.value);
+    nameDisplayCheck()
 })
 
+forgetBtn.addEventListener('click', function(){
+    localStorage.removeItem('navn')
+    nameDisplayCheck()
+})
 
-
-//Man kan i chrome se navnet ved at skrive localStorage.getItem("name") i loggen i browseren. 
+function nameDisplayCheck() {
+    if(localStorage.getItem('navn')){
+        let name = localStorage.getItem('navn');
+        h1.textContent = 'Velkommen ' + name;
+        personalGreeting.textContent = 'Velkommen til vores hjemmeside ' + name;
+        
+        } else {
+            h1.textContent = 'Velkommen ukendte person';
+            personalGreeting.textContent = 'Hej person som jeg ikke kender endnu';
+            
+        }
+    }
+//Dette betyder at funtionen bliver kørt til sidst. 
+document.body.onload = nameDisplayCheck

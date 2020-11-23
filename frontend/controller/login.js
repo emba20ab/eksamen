@@ -14,8 +14,18 @@ function loginValidate() {
                 .then(function(response){
                     console.log(response);
                     localStorage.setItem('loggedIn', response.data.id);
+                    localStorage.setItem('username', username2.value);
+                    
                 })
 
                 .then(() => window.location = "profile.html");
 
+
 }
+
+
+/*axios.get("http://localhost:5000/users/login", displaydata)
+.then(function(response){
+    console.log(response);
+    localStorage.getItem('loggedIn', response.data.id);
+})*/

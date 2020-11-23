@@ -1,11 +1,13 @@
 
 const fs = require('fs');
 const express = require('express');
+const { Router } = require('express');
 const router = express.Router()
     // variables
 
 
 const dataPath = '../model/users.json';
+
 //Create
 router.post('/', (req, res) => {
 
@@ -29,7 +31,7 @@ router.post('/', (req, res) => {
     
 });
 
-
+//login
 router.post('/login', (req, res) => {
 
     //her skal bruger-input tages fra req-body
@@ -53,43 +55,81 @@ router.post('/login', (req, res) => {
         res.status(400).send("fejl");   
     },
     true);
-});   
- 
+});
+
+//display user
+router.get('/:id', (req, res) => {
+    fs.readFile(dataPath, "utf8", (err, data) => {
+        let parsedData = JSON.parse(data)
+        const userId = req.params["id"];
+        res.send(parsedData[userId]);
+    });
+});
+// Delete 
+router.delete('/:id', (req, res) => {
+    fs.readFile(dataPath, "utf8", (err, data) => {
+        // add the new user
+        let parsedData = JSON.parse(data)
+        const userId = req.params["id"];
+        delete parsedData[userId];
+        fs.writeFile(dataPath, JSON.stringify(parsedData), () => {
+            res.status(200).send(`users id:${userId} removed`);
+        });
+    },
+    true);
+
+    //Måske lave et if statement. Hvis der står "null" i array'et så bliver det automatisk fjernet. Eller det vil måske ikke virke(hvad med kommaet??)
+    //Det skal ikke laves her, men inde i login funktionen, hvor den kigger efter username. Hvis der står "null,", så spring over?.
+    // Det har intet med det den her funktion at gøre. Lav et for-loop i loginfunktionen, der tager højde for "null,", og så skal den .pop(). 
+});
+
+
+//logout
+router.post('/logout', (req, res) => {
+
+    //her skal bruger-input tages fra req-body
+    //her skal hentes database array
+    fs.readFile(dataPath, "utf8", (err, data) => {
+                res.status(200).json("Logged out succesfully");
+                return
+            },
+    true);
+}); 
+
 
 module.exports = router;
-    /*
-    // helper methods
-    const readFile = (callback, returnJson = false, filePath = dataPath, encoding = 'utf8') => {
-        fs.readFile(filePath, encoding, (err, data) => {
-            if (err) {
-                throw err;
-            }
 
-            callback(returnJson ? JSON.parse(data) : data);
-        });
-    };
 
-    const writeFile = (fileData, callback, filePath = dataPath, encoding = 'utf8') => {
+   
+   
 
-        fs.writeFile(filePath, fileData, encoding, (err) => {
-            if (err) {
-                throw err;
-            }
-
-            callback();
-        });
-    };
-
-    // READ
-    app.get('/users', (req, res) => {
-        fs.readFile(dataPath, 'utf8', (err, data) => {
-            if (err) {
-                throw err;
-            }
-
-            res.send(JSON.parse(data));
-        });
+ /*
+router.get('/users', (req, res) => {
+    fs.readFile(dataPath, 'utf8', (err, data) => {
+        let parsedData = JSON.parse(data)
+        if (err) {
+            throw err;
+        }
+        res.send(JSON.parse(data));
     });
+});
+
+
+// DELETE
+router.delete('/:id', (req, res) => {
+
+    readFile(data => {
+
+        // add the new user
+        const userId = req.params["id"];
+        delete data[userId];
+
+        writeFile(JSON.stringify(data, 2), () => {
+            res.status(200).send(`users id:${userId} removed`);
+        });
+    },
+        true);
+});
 
     // CREATE
     app.post('/users', (req, res) => {
@@ -116,8 +156,7 @@ module.exports = router;
 
 
 
-
-    // UPDATE
+ // UPDATE
     app.put('/users/:id', (req, res) => {
 
         readFile(data => {
@@ -133,48 +172,4 @@ module.exports = router;
             true);
     });
 
-
-    // DELETE
-    app.delete('/users/:id', (req, res) => {
-
-        readFile(data => {
-
-            // add the new user
-            const userId = req.params["id"];
-            delete data[userId];
-
-            writeFile(JSON.stringify(data, null, 2), () => {
-                res.status(200).send(`users id:${userId} removed`);
-            });
-        },
-            true);
-    });
 */
-
-
-    /*
-    
-
-        */
-
-    //her bestemmes om brugeren logges ind eller ej
-
-
-
-
-  // LoginValidation
-  /*
-  const fs = require('fs');
-const dataPath = '../data/users.json';
-
-    fs.readFile(dataPath, 'utf8', (err, data) => {
-        if (err) {
-            throw err;
-        }
-
-        console.log(JSON.parse(data));
-    });
-*/
-
-
-
